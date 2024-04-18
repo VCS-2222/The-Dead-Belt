@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UI;
 using TMPro;
 
 public class Inventory : MonoBehaviour
@@ -18,15 +19,31 @@ public class Inventory : MonoBehaviour
     public List<Item> items;
     [SerializeField] TextMeshProUGUI weightCounter;
     [SerializeField] TextMeshProUGUI pageNumber;
+    [SerializeField] GameObject inventoryCanvas;
+    [SerializeField] Button startupSelectedButton;
 
     [SerializeField] GameObject newestPageMade;
-
-    public Item itemToAdd;
-    public Item itemToAdd2;
 
     [Header("Important Variables")]
     [SerializeField] float maxWeightOnBag;
     [SerializeField] float currentWeight;
+    [SerializeField] bool canvasActive;
+
+    public Controls controls;
+    private void Awake()
+    {
+        controls = new Controls();
+    }
+
+    private void OnEnable()
+    {
+        controls.Enable();
+    }
+
+    private void OnDisable()
+    {
+        controls.Disable();
+    }
 
     private void Start()
     {
@@ -36,32 +53,16 @@ public class Inventory : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (controls.UI.Inventory.WasPressedThisFrame())
         {
-            TurnPage(true);
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            TurnPage(false);
-        }
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            if (currentWeight > maxWeightOnBag) return;
-
-            AddItem(itemToAdd);
-        }
-
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            if (currentWeight > maxWeightOnBag) return;
-
-            AddItem(itemToAdd2);
+            CanvasOperator();
         }
     }
 
     public void AddItem(Item item)
     {
+        if (currentWeight >= maxWeightOnBag) return;
+
         if (pages.Count == 0)
         {
             MakeNewPage();
@@ -77,6 +78,7 @@ public class Inventory : MonoBehaviour
 
                 newSlot.GetComponent<Slot>().AssignItemInSlot(item);
                 items.Add(item);
+                AssignSlotName(newSlot, item.ReturnName());
                 AddToWeight(item.ReturnWeight());
                 break;
             }
@@ -97,6 +99,7 @@ public class Inventory : MonoBehaviour
 
                     newSlot.GetComponent<Slot>().AssignItemInSlot(item);
                     items.Add(item);
+                    AssignSlotName(newSlot, item.ReturnName());
                     AddToWeight(item.ReturnWeight());
                     break;
                 }
@@ -208,5 +211,26 @@ public class Inventory : MonoBehaviour
         }
 
         UpdatePageText();
+    }
+
+    public void AssignSlotName(GameObject newSlot, string newName)
+    {
+        newSlot.GetComponentInChildren<TextMeshPro>().text = newName;
+    }
+
+    public void CanvasOperator()
+    {
+        canvasActive = !canvasActive;
+
+        if (canvasActive)
+        {
+            startupSelectedButton.Select();
+            inventoryCanvas.SetActive(true);
+        }
+        else
+        {
+            startupSelectedButton.Select();
+            inventoryCanvas.SetActive(false);
+        }
     }
 }

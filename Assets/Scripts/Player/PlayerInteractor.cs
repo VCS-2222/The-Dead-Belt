@@ -6,6 +6,11 @@ public class PlayerInteractor : MonoBehaviour
 {
     [Header("Values")]
     [SerializeField] float interactRange;
+   // public RaycastHit hit;
+
+    [Header("Components")]
+    [SerializeField] Inventory inventory;
+
     public Controls controls;
     private void Awake()
     {
@@ -29,13 +34,20 @@ public class PlayerInteractor : MonoBehaviour
 
         Physics.Raycast(transform.position, transform.forward, out hit, interactRange);
 
-        if(hit.transform.tag == "Interactable")
+        if (hit.transform == null)
         {
-            ComponentCheck(hit);
+            return;
         }
         else
         {
-            return;
+            if (hit.transform.tag == "Interactable")
+            {
+                ComponentCheck(hit);
+            }
+            else
+            {
+                return;
+            }
         }
     }
 
@@ -56,6 +68,11 @@ public class PlayerInteractor : MonoBehaviour
                 ExecuteAudioBasedOnName(hit, "log");
             }
         }
+
+        if (hit.transform.gameObject.GetComponent<PhysicalItem>() != null)
+        {
+            AddItemToInventory(hit);
+        }
     }
 
     #region executables
@@ -73,6 +90,14 @@ public class PlayerInteractor : MonoBehaviour
         {
             hit.transform.gameObject.GetComponent<AudioInteractive>().StartAudioSource();
         }
+    }
+
+    void AddItemToInventory(RaycastHit hit)
+    {
+        Item itemToAdd = hit.transform.gameObject.GetComponent<PhysicalItem>().GetItem();
+        print(itemToAdd.name);
+
+        inventory.AddItem(itemToAdd);
     }
     #endregion
 }
