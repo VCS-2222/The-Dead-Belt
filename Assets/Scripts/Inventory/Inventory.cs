@@ -19,7 +19,7 @@ public class Inventory : MonoBehaviour
     public List<Item> items;
     [SerializeField] TextMeshProUGUI weightCounter;
     [SerializeField] TextMeshProUGUI pageNumber;
-    [SerializeField] GameObject inventoryCanvas;
+    [SerializeField] Canvas inventoryCanvas;
     [SerializeField] Button startupSelectedButton;
 
     [SerializeField] GameObject newestPageMade;
@@ -78,8 +78,8 @@ public class Inventory : MonoBehaviour
 
                 newSlot.GetComponent<Slot>().AssignItemInSlot(item);
                 items.Add(item);
-                AssignSlotName(newSlot, item.ReturnName());
                 AddToWeight(item.ReturnWeight());
+                //AssignSlotName(newSlot, item.ReturnName().ToString());
                 break;
             }
 
@@ -99,8 +99,8 @@ public class Inventory : MonoBehaviour
 
                     newSlot.GetComponent<Slot>().AssignItemInSlot(item);
                     items.Add(item);
-                    AssignSlotName(newSlot, item.ReturnName());
                     AddToWeight(item.ReturnWeight());
+                    //AssignSlotName(newSlot, item.ReturnName().ToString());
                     break;
                 }
             }
@@ -150,6 +150,16 @@ public class Inventory : MonoBehaviour
         {
             currentWeight -= amount;
         }
+    }
+
+    public float CheckWeight()
+    {
+        return currentWeight;
+    }
+
+    public float ReturnMaxWeight()
+    {
+        return maxWeightOnBag;
     }
 
     public void UpdateWeightText()
@@ -215,7 +225,9 @@ public class Inventory : MonoBehaviour
 
     public void AssignSlotName(GameObject newSlot, string newName)
     {
-        newSlot.GetComponentInChildren<TextMeshPro>().text = newName;
+        GameObject newSlotChild = newSlot.transform.GetChild(0).gameObject;
+
+        newSlotChild.GetComponent<Text>().text = newName;
     }
 
     public void CanvasOperator()
@@ -225,12 +237,12 @@ public class Inventory : MonoBehaviour
         if (canvasActive)
         {
             startupSelectedButton.Select();
-            inventoryCanvas.SetActive(true);
+            inventoryCanvas.enabled = true;
         }
         else
         {
             startupSelectedButton.Select();
-            inventoryCanvas.SetActive(false);
+            inventoryCanvas.enabled = false;
         }
     }
 }

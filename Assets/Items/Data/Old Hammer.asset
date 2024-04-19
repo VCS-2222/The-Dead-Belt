@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c03beb343816cce44a393f04476683e1, type: 3}
-  m_Name: Tin Can
+  m_Name: Old Hammer
   m_EditorClassIdentifier: 
   itemName: 
   itemType: 
   itemDescription: 
+  itemWeight: 0
   isWeapon: 0
   isConsumable: 0
   isMelee: 0

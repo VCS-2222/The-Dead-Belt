@@ -71,6 +71,8 @@ public class PlayerInteractor : MonoBehaviour
 
         if (hit.transform.gameObject.GetComponent<PhysicalItem>() != null)
         {
+            if (inventory.CheckWeight() >= inventory.ReturnMaxWeight()) return;
+
             AddItemToInventory(hit);
         }
     }
@@ -98,6 +100,7 @@ public class PlayerInteractor : MonoBehaviour
         print(itemToAdd.name);
 
         inventory.AddItem(itemToAdd);
+        Destroy(hit.transform.gameObject);
     }
     #endregion
 }
