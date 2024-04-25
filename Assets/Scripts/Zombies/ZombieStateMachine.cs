@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public interface ZState
 {
@@ -13,12 +14,15 @@ public interface ZState
 public class ZombieStateMachine : MonoBehaviour
 {
     [Header("State Status")]
+    public string showStatus;
     [SerializeField] ZState currentState;
     [SerializeField] ZState lastState;
+    [HideInInspector] public NavMeshAgent agent;
+    [HideInInspector] public GameObject breathingTarget;
 
     public ZsIdling idleState = new ZsIdling();
     public ZsRoaming roamState = new ZsRoaming();
-    //public PmRunning runState = new PmRunning();
+    public ZsChasing chaseState = new ZsChasing();
 
     private void Start()
     {
@@ -26,8 +30,15 @@ public class ZombieStateMachine : MonoBehaviour
         ChangeState(idleState);
     }
 
+    public void PopulateAgent(NavMeshAgent addAgent)
+    {
+        agent = addAgent;
+    }
+
     private void Update()
     {
+        showStatus = currentState.ToString();
+
         if (currentState != null)
         {
             currentState.Updating();

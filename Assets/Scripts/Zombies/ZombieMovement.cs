@@ -8,14 +8,17 @@ public class ZombieMovement : MonoBehaviour
     [Header("Important Components")]
     [SerializeField] NavMeshAgent agent;
     [SerializeField] ZombieStateMachine stateMachine;
+    [SerializeField] Transform zombieEyes;
 
     [Header("Variables")]
     [SerializeField] float currentSpeed;
     [SerializeField] float walkSpeed;
     [SerializeField] float runSpeed;
+    [SerializeField] float sight;
 
     private void Start()
     {
+        stateMachine.PopulateAgent(agent);
         currentSpeed = walkSpeed;
         agent.speed = currentSpeed;
     }
@@ -24,7 +27,30 @@ public class ZombieMovement : MonoBehaviour
     {
         ValidateCurrentState();
 
-        
+        VisionPerAngle(45);
+        VisionPerAngle(30);
+        VisionPerAngle(15);
+        VisionPerAngle(0);
+        VisionPerAngle(-15);
+        VisionPerAngle(-30);
+        VisionPerAngle(-45);
+    }
+
+    void VisionPerAngle(float angleIn)
+    {
+        Vector3 start = zombieEyes.position;
+        Quaternion angle = Quaternion.Euler(0, angleIn, 0);
+
+        Physics.Raycast(start, angle * transform.forward, out RaycastHit hit, sight);
+
+        Debug.DrawLine(start, hit.transform.position, Color.red);
+
+        if (hit.transform == null) return;
+
+        if (hit.transform.gameObject.tag == "Player")
+        {
+            stateMachine.ChangeState(stateMachine.chaseState);
+        }
     }
 
     void ValidateCurrentState()
@@ -37,6 +63,11 @@ public class ZombieMovement : MonoBehaviour
         if (stateMachine.ReturnCurrentState() == stateMachine.roamState)
         {
             currentSpeed = walkSpeed;
+        }
+
+        if (stateMachine.ReturnCurrentState() == stateMachine.chaseState)
+        {
+            currentSpeed = runSpeed;
         }
     }
 }

@@ -2,24 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ZsIdling : ZState
+public class ZsChasing : ZState
 {
     ZombieStateMachine stateMachine;
-    float idlingTimer;
+    Transform target;
 
     public void Activating(ZombieStateMachine StateMachine)
     {
         stateMachine = StateMachine;
-        idlingTimer = Random.Range(1, 25);
+        target = stateMachine.breathingTarget.transform;
+        stateMachine.agent.destination = target.position;
     }
 
     public void Updating()
     {
-        idlingTimer -= Time.deltaTime;
-
-        if(idlingTimer < 0)
+        if(stateMachine.agent.remainingDistance < 1)
         {
-            stateMachine.ChangeState(stateMachine.roamState);
+            //stateMachine.ChangeState(stateMachine.);
         }
     }
 
@@ -28,8 +27,8 @@ public class ZsIdling : ZState
 
     }
 
-    public void Deactivating() 
+    public void Deactivating()
     {
-        
+
     }
 }
