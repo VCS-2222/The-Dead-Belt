@@ -6,15 +6,15 @@ using UnityEditor;
 [CreateAssetMenu(fileName = "New Item", menuName = "Create New Item")]
 public class Item : ScriptableObject
 {
-    [HideInInspector] public string itemName;
-    [HideInInspector] public string itemType;
-    [HideInInspector] public string itemDescription;
-    [HideInInspector] public float itemWeight;
+    public string itemName;
+    public string itemType;
+    public string itemDescription;
+    public float itemWeight;
 
     public bool isWeapon;
     public bool isConsumable;
 
-    [HideInInspector] public bool isMelee;
+    public bool isMelee;
     public float ReturnWeight()
     {
         return itemWeight;
@@ -26,47 +26,47 @@ public class Item : ScriptableObject
     }
 }
 
-#if UNITY_EDITOR
-[CustomEditor(typeof(Item))]
-class ItemEditor : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        Item itemScript = (Item)target;
+//#if UNITY_EDITOR
+//[CustomEditor(typeof(Item))]
+//class ItemEditor : Editor
+//{
+//    public override void OnInspectorGUI()
+//    {
+//        Item itemScript = (Item)target;
 
-        EditorGUILayout.LabelField("Item Name");
-        itemScript.itemName = GUILayout.TextField(itemScript.itemName);
+//        EditorGUILayout.LabelField("Item Name");
+//        itemScript.itemName = GUILayout.TextField(itemScript.itemName);
 
-        EditorGUILayout.LabelField("Item Description");
-        itemScript.itemDescription = GUILayout.TextField(itemScript.itemDescription);
+//        EditorGUILayout.LabelField("Item Description");
+//        itemScript.itemDescription = GUILayout.TextField(itemScript.itemDescription);
 
-        EditorGUILayout.LabelField("Item Type");
-        itemScript.itemType = GUILayout.TextField(itemScript.itemType);
+//        EditorGUILayout.LabelField("Item Type");
+//        itemScript.itemType = GUILayout.TextField(itemScript.itemType);
 
-        EditorGUILayout.LabelField("Item Weight");
-        itemScript.itemWeight = EditorGUILayout.FloatField(itemScript.itemWeight);
+//        EditorGUILayout.LabelField("Item Weight");
+//        itemScript.itemWeight = EditorGUILayout.FloatField(itemScript.itemWeight);
 
-        EditorGUILayout.Space();
+//        EditorGUILayout.Space();
 
-        itemScript.isWeapon = GUILayout.Toggle(itemScript.isWeapon, "Is the item a weapon");
-        itemScript.isConsumable = GUILayout.Toggle(itemScript.isConsumable, "Is the item consumable?");
+//        itemScript.isWeapon = GUILayout.Toggle(itemScript.isWeapon, "Is the item a weapon");
+//        itemScript.isConsumable = GUILayout.Toggle(itemScript.isConsumable, "Is the item consumable?");
 
-        if (itemScript.isWeapon)
-        {
-            itemScript.isConsumable = false;
-            itemScript.isMelee = GUILayout.Toggle(itemScript.isMelee, "Is the weapon melee?");
+//        if (itemScript.isWeapon)
+//        {
+//            itemScript.isConsumable = false;
+//            itemScript.isMelee = GUILayout.Toggle(itemScript.isMelee, "Is the weapon melee?");
 
-            EditorGUILayout.Space();
+//            EditorGUILayout.Space();
 
-            if (itemScript.isMelee)
-            {
+//            if (itemScript.isMelee)
+//            {
 
-            }
-            else
-            {
+//            }
+//            else
+//            {
 
-            }
-        }
-    }
-}
-#endif
+//            }
+//        }
+//    }
+//}
+//#endif

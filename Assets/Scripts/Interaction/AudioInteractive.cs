@@ -15,6 +15,11 @@ public class AudioInteractive : MonoBehaviour
         return functionName;
     }
 
+    private void FixedUpdate()
+    {
+        
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
@@ -26,19 +31,27 @@ public class AudioInteractive : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "Player")
-        {
-            textCanvas.SetActive(false);
-        }
-    }
-
     private void Update()
     {
         if (!targetAudioSource.isPlaying)
         {
             textCanvas.SetActive(false);
+        }
+        else
+        {
+            Collider[] colliders = Physics.OverlapSphere(transform.position, 3);
+
+            foreach(Collider col in colliders)
+            {
+                if(col.tag == "Player" && functionName == "log")
+                {
+                    textCanvas.SetActive(true);
+                }
+                else
+                {
+                    textCanvas.SetActive(false);
+                }
+            }
         }
     }
 

@@ -16,9 +16,9 @@ public class Slot : MonoBehaviour
 
     public void InitializeTheItem()
     {
-        print(itemInSlot.ReturnName());
+        //print(itemInSlot.ReturnName());
         itemName.text = itemInSlot.ReturnName().ToString();
-        print(itemName);
+        //print(itemName);
     }
 
     public int ReturnAmountInSlot()
@@ -29,6 +29,11 @@ public class Slot : MonoBehaviour
     public Item ReturnItem()
     {
         return itemInSlot;
+    }
+
+    public string ReturnDescription()
+    {
+        return itemInSlot.itemDescription.ToString();
     }
 
     public void AssignItemInSlot(Item item)

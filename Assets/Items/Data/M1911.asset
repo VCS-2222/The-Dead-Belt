@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c03beb343816cce44a393f04476683e1, type: 3}
   m_Name: M1911
   m_EditorClassIdentifier: 
-  itemName: 
-  itemType: 
-  itemDescription: 
-  isWeapon: 0
+  itemName: M1911
+  itemType: weapon
+  itemDescription: A gun.
+  itemWeight: 7
+  isWeapon: 1
   isConsumable: 0
   isMelee: 0

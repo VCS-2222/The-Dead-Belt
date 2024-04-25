@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c03beb343816cce44a393f04476683e1, type: 3}
   m_Name: Shiv
   m_EditorClassIdentifier: 
-  itemName: 
-  itemType: 
-  itemDescription: 
-  itemWeight: 0
-  isWeapon: 0
+  itemName: Shiv
+  itemType: weapon
+  itemDescription: Makeshift knife.
+  itemWeight: 4
+  isWeapon: 1
   isConsumable: 0
-  isMelee: 0
+  isMelee: 1

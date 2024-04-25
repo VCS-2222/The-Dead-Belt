@@ -17,12 +17,16 @@ public class Inventory : MonoBehaviour
 
     [SerializeField] GameObject itemSlot;
     public List<Item> items;
-    [SerializeField] TextMeshProUGUI weightCounter;
-    [SerializeField] TextMeshProUGUI pageNumber;
     [SerializeField] Canvas inventoryCanvas;
     [SerializeField] Button startupSelectedButton;
+    [SerializeField] GameObject currentActivePage;
 
     [SerializeField] GameObject newestPageMade;
+
+    [Header("UI")]
+    [SerializeField] TextMeshProUGUI weightCounter;
+    [SerializeField] TextMeshProUGUI pageNumber;
+    [SerializeField] TextMeshProUGUI description;
 
     [Header("Important Variables")]
     [SerializeField] float maxWeightOnBag;
@@ -30,6 +34,7 @@ public class Inventory : MonoBehaviour
     [SerializeField] bool canvasActive;
 
     public Controls controls;
+
     private void Awake()
     {
         controls = new Controls();
@@ -77,6 +82,7 @@ public class Inventory : MonoBehaviour
                 GameObject newSlot = Instantiate(itemSlot, pages[i].transform.GetChild(0), false);
 
                 newSlot.GetComponent<Slot>().AssignItemInSlot(item);
+                //newSlot.GetComponent<Button>().OnSelect(CheckSlotForSelection(newSlot.GetComponent<Slot>()));
                 items.Add(item);
                 AddToWeight(item.ReturnWeight());
                 //AssignSlotName(newSlot, item.ReturnName().ToString());
@@ -98,6 +104,7 @@ public class Inventory : MonoBehaviour
                     GameObject newSlot = Instantiate(itemSlot, pages[i].transform.GetChild(0), false);
 
                     newSlot.GetComponent<Slot>().AssignItemInSlot(item);
+                    //newSlot.GetComponent<Button>().onClick.AddListener(() => SubscribeToDescription(newSlot.GetComponent<Slot>()));
                     items.Add(item);
                     AddToWeight(item.ReturnWeight());
                     //AssignSlotName(newSlot, item.ReturnName().ToString());
@@ -216,9 +223,13 @@ public class Inventory : MonoBehaviour
 
                     TurnOffSpecificPage(i);
                     pages[i - 1].transform.GetChild(0).gameObject.SetActive(true);
+                    break;
                 }
             }
         }
+
+        GetActivePage();
+        startupSelectedButton = ReturnFirstSlotButton();
 
         UpdatePageText();
     }
@@ -230,18 +241,81 @@ public class Inventory : MonoBehaviour
         newSlotChild.GetComponent<Text>().text = newName;
     }
 
+    public void GetActivePage()
+    {
+        for(int i = 0; i < pages.Count; i++)
+        {
+            if (pages[i].enabled)
+            {
+                currentActivePage = pages[i].gameObject;
+            }
+        }
+    }
+
+    public void CheckSlotForSelection(Slot slot)
+    {
+        description.text = slot.ReturnDescription();
+    }
+
+    public Slot ReturnFirstSlotOfActivePage()
+    {
+        GetActivePage();
+
+        if (currentActivePage.GetComponent<InventoryPage>().amountOfItemsInPage >= 1)
+        {
+            print("returning slot");
+
+            GameObject actualPage = currentActivePage.transform.GetChild(0).gameObject;
+
+            Slot wantedSlot = actualPage.GetComponentInChildren<Slot>();
+
+            print(wantedSlot);
+
+            return wantedSlot;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public Button ReturnFirstSlotButton()
+    {
+        return ReturnFirstSlotOfActivePage().gameObject.GetComponent<Button>();
+    }
+
     public void CanvasOperator()
     {
         canvasActive = !canvasActive;
 
         if (canvasActive)
         {
-            startupSelectedButton.Select();
+            GetActivePage();
+
+            if (currentActivePage != null)
+            {
+                print("found active page");
+
+                if(ReturnFirstSlotOfActivePage() != null)
+                {
+                    print("found first slot");
+
+                    startupSelectedButton = ReturnFirstSlotButton();
+
+                    if (startupSelectedButton != null)
+                    {
+                        print("found slot button");
+
+                        startupSelectedButton.Select();
+                        inventoryCanvas.enabled = true;
+                    }
+                }
+            }
+
             inventoryCanvas.enabled = true;
         }
         else
         {
-            startupSelectedButton.Select();
             inventoryCanvas.enabled = false;
         }
     }
