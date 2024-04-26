@@ -10,7 +10,7 @@ public class ZsIdling : ZState
     public void Activating(ZombieStateMachine StateMachine)
     {
         stateMachine = StateMachine;
-        idlingTimer = Random.Range(1, 25);
+        idlingTimer = Random.Range(1, 5);
     }
 
     public void Updating()

@@ -16,7 +16,9 @@ public class ZsChasing : ZState
 
     public void Updating()
     {
-        if(stateMachine.agent.remainingDistance < 1)
+        stateMachine.agent.destination = target.position;
+
+        if (stateMachine.agent.remainingDistance < 1)
         {
             //stateMachine.ChangeState(stateMachine.);
         }

@@ -43,12 +43,13 @@ public class ZombieMovement : MonoBehaviour
 
         Physics.Raycast(start, angle * transform.forward, out RaycastHit hit, sight);
 
-        Debug.DrawLine(start, hit.transform.position, Color.red);
-
         if (hit.transform == null) return;
 
-        if (hit.transform.gameObject.tag == "Player")
+        Debug.DrawLine(start, hit.transform.position, Color.red);
+
+        if (hit.collider.tag == "Player")
         {
+            stateMachine.breathingTarget = hit.transform.gameObject;
             stateMachine.ChangeState(stateMachine.chaseState);
         }
     }
