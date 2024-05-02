@@ -23,8 +23,10 @@ public class PlayerMovementStateMachine : MonoBehaviour
     public PmWalking walkState = new PmWalking();
     public PmRunning runState = new PmRunning();
     public PmCrouching crouchState = new PmCrouching();
+    public PmCrawling crawlingState = new PmCrawling();
 
     [Header("Movement Components and Variables")]
+    [SerializeField] GameObject cameraHolder;
     [SerializeField] CharacterController controller;
     [SerializeField] GameObject groundCheckObject;
     [SerializeField] float currentSpeed;
@@ -86,6 +88,12 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
     public void CheckForStateChange()
     {
+        if (currentState == crawlingState)
+        {
+            headbob.AssignCurves(headbob.crawlingCurveX, headbob.crawlingCurveY);
+            headbob.ChangeRotationTiltConstrains(-2.5f, 2.5f);
+        }
+
         if (currentState == crouchState)
         {
             headbob.AssignCurves(headbob.crouchCurveX, headbob.crouchCurveY);
@@ -123,6 +131,12 @@ public class PlayerMovementStateMachine : MonoBehaviour
         controller.height = Mathf.Lerp(startHeight, height, 2f * Time.deltaTime);
     }
 
+    public void ChangeControllerAndCamera(float newCameraPosition, float height)
+    {
+        cameraHolder.transform.localPosition = new Vector3(0, newCameraPosition, 0);
+        controller.height = height;
+    }
+
     public IEnumerator ChangeControllerGradually(float center, float height, float time)
     {
         float targetCenterPos = center;
@@ -134,20 +148,31 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
         while(elapse < time)
         {
-            //float wantedCenter = Mathf.Lerp(startCenterPos, targetCenterPos, 2.5f * Time.deltaTime);
-            //controller.center = new Vector3(0, wantedCenter, 0);
-
-            controller.height = startCenterPos - .5f * Time.deltaTime;
-
-            if(controller.height < height)
+            if(controller.height > height)
             {
-                controller.height = height;
+                controller.height -= 0.05f * Time.deltaTime;
+
+                if (controller.height < height)
+                {
+                    controller.height = height;
+                }
+            }
+            else
+            {
+                controller.height += 0.05f * Time.deltaTime;
+
+                if (controller.height > height)
+                {
+                    controller.height = height;
+                }
             }
 
-            yield return new WaitForSeconds(0.05f);
-
             elapse++;
+
+            yield return null;
         }
+
+        //controller.center = new Vector3(0, targetCenterPos, 0);
     }
 
     public void SetSpeed(float newSpeed)

@@ -6,11 +6,12 @@ TagManager:
   tags:
   - Interactable
   - Zombie
+  - Water
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - 

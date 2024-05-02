@@ -17,6 +17,9 @@ public class CameraHeadbob : MonoBehaviour
     public AnimationCurve crouchCurveY;
     public AnimationCurve crouchCurveX;
 
+    public AnimationCurve crawlingCurveY;
+    public AnimationCurve crawlingCurveX;
+
     [Header("Important Components")]
     [SerializeField] GameObject targetCamera;
     public PlayerMovementStateMachine stateMachine;

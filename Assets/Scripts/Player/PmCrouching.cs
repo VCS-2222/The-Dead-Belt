@@ -8,10 +8,10 @@ public class PmCrouching : IState
     float crouchSpeed = .1f;
     public Controls controls;
 
-    float controllerCenterOriginal = 0;
+    float cameraOriginal = 0.7f;
     float controllerHeightOriginal = 1.7f;
 
-    float newControllerCenter = .4f;
+    float newCameraPosition = 0.3f;
     float newControllerHeight = 1f;
 
     public void OnActivated(PlayerMovementStateMachine StateMachine)
@@ -20,15 +20,25 @@ public class PmCrouching : IState
         controls.Enable();
         stateMachine = StateMachine;
         stateMachine.SetSpeed(crouchSpeed);
-        stateMachine.StartCoroutine(stateMachine.ChangeControllerGradually(newControllerCenter, newControllerHeight, 1.2f));
-        //stateMachine.transform.GetComponent<GravityApplier>().ChangeGroundCheckYLevel(1);
+        stateMachine.ChangeControllerAndCamera(newCameraPosition, newControllerHeight);
     }
 
     public void OnUpdate()
     {
+        RaycastHit hit;
+
+        Physics.Raycast(stateMachine.transform.position, Vector3.up, out hit, 1);
+
+        if (hit.collider != null) return;
+
         if (controls.Player.Running.WasPerformedThisFrame() || controls.Player.Crouching.WasPerformedThisFrame())
         {
             stateMachine.ChangeState(stateMachine.walkState);
+        }
+
+        if (controls.Player.Proning.WasPerformedThisFrame())
+        {
+            stateMachine.ChangeState(stateMachine.crawlingState);
         }
     }
 
@@ -39,8 +49,7 @@ public class PmCrouching : IState
 
     public void OnDeactivated()
     {
-        stateMachine.StartCoroutine(stateMachine.ChangeControllerGradually(controllerCenterOriginal, controllerHeightOriginal, 1.2f));
-        //stateMachine.transform.GetComponent<GravityApplier>().ChangeGroundCheckYLevel(0);
+        stateMachine.ChangeControllerAndCamera(cameraOriginal, controllerHeightOriginal);
         controls.Disable();
     }
 }

@@ -22,7 +22,12 @@ public class PmIdling : IState
             stateMachine.ChangeState(stateMachine.crouchState);
         }
 
-        if(stateMachine.zAxis > 0.2f || stateMachine.xAxis > 0.2f || stateMachine.zAxis < -0.2f || stateMachine.xAxis < -0.2f)
+        if (controls.Player.Proning.WasPerformedThisFrame())
+        {
+            stateMachine.ChangeState(stateMachine.crawlingState);
+        }
+
+        if (stateMachine.zAxis > 0.2f || stateMachine.xAxis > 0.2f || stateMachine.zAxis < -0.2f || stateMachine.xAxis < -0.2f)
         {
             stateMachine.ChangeState(stateMachine.walkState);
         }

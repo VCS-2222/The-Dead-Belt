@@ -13,7 +13,8 @@ public class GravityApplier : MonoBehaviour
 
     private void Update()
     {
-        isGrounded = Physics.CheckSphere(groundCheckObject.transform.position, groundCheckRange, groundLayer);
+        isGrounded = controller.isGrounded;
+        //isGrounded = Physics.CheckSphere(groundCheckObject.transform.position, groundCheckRange, groundLayer);
     }
 
     public void ChangeGroundCheckYLevel(int change)
@@ -32,15 +33,15 @@ public class GravityApplier : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(groundCheckObject.transform.position, groundCheckRange);
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawWireSphere(groundCheckObject.transform.position, groundCheckRange);
+    //}
 
     private void FixedUpdate()
     {
-        if (isGrounded) return;
+        if(isGrounded) return;
 
         controller.Move(Vector3.down * gravity);
     }

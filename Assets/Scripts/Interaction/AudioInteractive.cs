@@ -15,22 +15,6 @@ public class AudioInteractive : MonoBehaviour
         return functionName;
     }
 
-    private void FixedUpdate()
-    {
-        
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Player")
-        {
-            if (functionName == "log" && targetAudioSource.isPlaying)
-            {
-                textCanvas.SetActive(true);
-            }
-        }
-    }
-
     private void Update()
     {
         if (!targetAudioSource.isPlaying)
