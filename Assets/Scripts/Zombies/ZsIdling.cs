@@ -30,6 +30,6 @@ public class ZsIdling : ZState
 
     public void Deactivating() 
     {
-        
+        idlingTimer = 0;
     }
 }

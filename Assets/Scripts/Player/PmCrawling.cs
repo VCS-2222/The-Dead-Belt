@@ -25,19 +25,25 @@ public class PmCrawling : IState
 
     public void OnUpdate()
     {
-        RaycastHit hit;
-
-        Physics.Raycast(stateMachine.transform.position, Vector3.up, out hit, 1.5f);
-
-        if (hit.collider != null) return;
-
         if (controls.Player.Proning.WasPerformedThisFrame())
         {
+            RaycastHit hit;
+
+            Physics.Raycast(stateMachine.transform.position, Vector3.up, out hit, 1.5f);
+
+            if (hit.collider != null) return;
+
             stateMachine.ChangeState(stateMachine.walkState);
         }
 
         if (controls.Player.Crouching.WasPerformedThisFrame())
         {
+            RaycastHit hit;
+
+            Physics.Raycast(stateMachine.transform.position, Vector3.up, out hit, 0.6f);
+
+            if (hit.collider != null) return;
+
             stateMachine.ChangeState(stateMachine.crouchState);
         }
     }

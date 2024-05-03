@@ -12,7 +12,7 @@ public class ZsRoaming : ZState
     public void Activating(ZombieStateMachine StateMachine)
     {
         stateMachine = StateMachine;
-        roamArea = Random.Range(2, 50);
+        roamArea = Random.Range(2, 5);
         GenerateRandomDestination();
     }
 
@@ -30,12 +30,14 @@ public class ZsRoaming : ZState
 
         if (NavMesh.SamplePosition(randomCoords, out hit, 1, NavMesh.AllAreas))
         {
+            Debug.Log("Path found");
             Vector3 coords = hit.position;
             stateMachine.agent.ResetPath();
             stateMachine.agent.SetDestination(coords);
         }
         else
         {
+            Debug.Log("No path found");
             return;
         }
     }

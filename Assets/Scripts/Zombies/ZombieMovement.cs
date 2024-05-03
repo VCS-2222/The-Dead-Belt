@@ -45,7 +45,7 @@ public class ZombieMovement : MonoBehaviour
 
         if (hit.transform == null) return;
 
-        Debug.DrawLine(start, hit.transform.position, Color.red);
+        Debug.DrawLine(start, hit.point, Color.red);
 
         if (hit.collider.tag == "Player")
         {

@@ -13,6 +13,7 @@ public class MainMenu : MonoBehaviour
     void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         Time.timeScale = 1f;
         loadBar.SetActive(false);
         startSelectButton.Select();

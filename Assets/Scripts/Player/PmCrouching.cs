@@ -29,16 +29,16 @@ public class PmCrouching : IState
 
         Physics.Raycast(stateMachine.transform.position, Vector3.up, out hit, 1);
 
+        if (controls.Player.Proning.WasPerformedThisFrame())
+        {
+            stateMachine.ChangeState(stateMachine.crawlingState);
+        }
+
         if (hit.collider != null) return;
 
         if (controls.Player.Running.WasPerformedThisFrame() || controls.Player.Crouching.WasPerformedThisFrame())
         {
             stateMachine.ChangeState(stateMachine.walkState);
-        }
-
-        if (controls.Player.Proning.WasPerformedThisFrame())
-        {
-            stateMachine.ChangeState(stateMachine.crawlingState);
         }
     }
 
