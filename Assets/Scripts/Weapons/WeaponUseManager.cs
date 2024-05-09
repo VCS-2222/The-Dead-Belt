@@ -43,7 +43,13 @@ public class WeaponUseManager : MonoBehaviour
     {
         if (currentWeapon.GetComponent<ClipFedGun>() != null)
         {
-            controls.Weapons.Fire.performed += t => currentWeapon.GetComponent<ClipFedGun>().StartCoroutine(currentWeapon.GetComponent<ClipFedGun>().Shoot(shootPoint, 55f, .1f));
+            controls.Weapons.Fire.performed += t => currentWeapon.GetComponent<ClipFedGun>().StartCoroutine(currentWeapon.GetComponent<ClipFedGun>().Shoot(shootPoint, .1f));
+            controls.Weapons.Reload.performed += t => currentWeapon.GetComponent<ClipFedGun>().Reload();
+        }
+        else if(currentWeapon.GetComponent<MagFedGun>() != null)
+        {
+            controls.Weapons.Fire.performed += t => currentWeapon.GetComponent<MagFedGun>().StartCoroutine(currentWeapon.GetComponent<MagFedGun>().Shoot(shootPoint, .1f));
+            controls.Weapons.Reload.performed += t => currentWeapon.GetComponent<MagFedGun>().Reload();
         }
         else
         {

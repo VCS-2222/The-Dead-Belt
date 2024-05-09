@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClipFedGun : MonoBehaviour
+public class MagFedGun : MonoBehaviour
 {
     [Header("Gun Variables")]
     [SerializeField] int currentAmmo;
@@ -36,6 +36,8 @@ public class ClipFedGun : MonoBehaviour
 
     public IEnumerator Shoot(Transform origin, float delayToShoot)
     {
+        if (currentAmmo <= 0) yield break;
+
         animator.SetTrigger("shot");
 
         yield return new WaitForSeconds(delayToShoot);
@@ -43,10 +45,17 @@ public class ClipFedGun : MonoBehaviour
         RaycastHit hit;
         Physics.Raycast(origin.position, origin.transform.forward, out hit, range);
 
+        currentAmmo--;
+
+        if(currentAmmo == 0)
+        {
+            animator.SetBool("empty", true);
+        }
+
         if (hit.collider != null)
         {
             print(hit.collider.gameObject.name);
-            if(hit.collider.gameObject.GetComponent<ZombieMovement>() != null)
+            if (hit.collider.gameObject.GetComponent<ZombieMovement>() != null)
             {
                 Destroy(hit.collider.gameObject);
             }
@@ -55,6 +64,17 @@ public class ClipFedGun : MonoBehaviour
 
     public void Reload()
     {
-
+        if(currentAmmo <= 0)
+        {
+            animator.SetTrigger("reload");
+            currentAmmo = maxAmmo;
+            animator.SetBool("empty", false);
+        }
+        else
+        {
+            animator.SetTrigger("reload");
+            currentAmmo = maxAmmo;
+            animator.SetBool("empty", false);
+        }
     }
 }

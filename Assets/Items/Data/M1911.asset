@@ -16,6 +16,8 @@ MonoBehaviour:
   itemType: weapon
   itemDescription: A gun.
   itemWeight: 7
+  itemPrefab: {fileID: 4129228537108176351, guid: 6289dd571ddcaa143a52a636668e2333,
+    type: 3}
   isWeapon: 1
   isConsumable: 0
   isMelee: 0
