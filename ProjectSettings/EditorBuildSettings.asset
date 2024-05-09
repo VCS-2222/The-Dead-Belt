@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Main Menu/MainMenu.unity
     guid: cfc659cc98080b942ac8d9a223a53cf9
   - enabled: 1
-    path: Assets/Scenes/OutdoorsScene/OutdoorsScene.unity
-    guid: 8124e5870f4fd4c779e7a5f994e84ad1
+    path: Assets/Scenes/Game/Game.unity
+    guid: ce00298eff14f104785fc04b793dfdaa
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

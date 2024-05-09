@@ -31,6 +31,7 @@ public class PlayerMovementStateMachine : MonoBehaviour
     [SerializeField] GameObject groundCheckObject;
     [SerializeField] float currentSpeed;
     [SerializeField] CameraHeadbob headbob;
+    [SerializeField] GravityApplier gravityApplier;
     public float zAxis;
     public float xAxis;
 
@@ -92,24 +93,28 @@ public class PlayerMovementStateMachine : MonoBehaviour
         {
             headbob.AssignCurves(headbob.crawlingCurveX, headbob.crawlingCurveY);
             headbob.ChangeRotationTiltConstrains(-2.5f, 2.5f);
+            gravityApplier.raycastReachDown = 0.35f;
         }
 
         if (currentState == crouchState)
         {
             headbob.AssignCurves(headbob.crouchCurveX, headbob.crouchCurveY);
             headbob.ChangeRotationTiltConstrains(-5, 5);
+            gravityApplier.raycastReachDown = 0.6f;
         }
 
         if (currentState == walkState)
         {
             headbob.AssignCurves(headbob.walkCurveX, headbob.walkCurveY);
             headbob.ChangeRotationTiltConstrains(-10, 10);
+            gravityApplier.raycastReachDown = 1.2f;
         }
 
         if(currentState == runState)
         {
             headbob.AssignCurves(headbob.runCurveX, headbob.runCurveY);
             headbob.ChangeRotationTiltConstrains(-15,15);
+            gravityApplier.raycastReachDown = 1.2f;
         }
     }
 

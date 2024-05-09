@@ -42,6 +42,11 @@ public class Slot : MonoBehaviour
         amountOfItemsInSlot++;
     }
 
+    public void MakeThisSlotCurrentSlot()
+    {
+        Inventory.Instance.AssignSlotToCurrentSlot(gameObject.GetComponent<Slot>());
+    }
+
     public void KillItemInSlot()
     {
         itemInSlot = null;

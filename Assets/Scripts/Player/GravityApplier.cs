@@ -10,12 +10,13 @@ public class GravityApplier : MonoBehaviour
     [SerializeField] float groundCheckRange;
     [SerializeField] LayerMask groundLayer;
     public bool isGrounded;
+    public float raycastReachDown;
 
     private void Update()
     {
         //isGrounded = controller.isGrounded;
         //isGrounded = Physics.SphereCast(transform.position, groundCheckRange, Vector3.down, out RaycastHit hit, 1f);
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, 1.2f);
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, raycastReachDown);
         //isGrounded = Physics.CheckSphere(groundCheckObject.transform.position, groundCheckRange, groundLayer);
     }
 
@@ -39,7 +40,7 @@ public class GravityApplier : MonoBehaviour
     {
         Gizmos.color = Color.red;
 
-        Gizmos.DrawRay(transform.localPosition, Vector3.down * 1.2f);
+        Gizmos.DrawRay(transform.localPosition, Vector3.down * raycastReachDown);
         //Gizmos.DrawWireSphere(groundCheckObject.transform.position, groundCheckRange);
     }
 

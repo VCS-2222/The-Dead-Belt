@@ -7,6 +7,8 @@ using TMPro;
 
 public class Inventory : MonoBehaviour
 {
+    public static Inventory Instance;
+
     [Header("Customization Of Inventory")]
     [SerializeField] int amountOfItemsPerPageAllowed;
 
@@ -20,6 +22,9 @@ public class Inventory : MonoBehaviour
     [SerializeField] Canvas inventoryCanvas;
     [SerializeField] Button startupSelectedButton;
     [SerializeField] GameObject currentActivePage;
+    [SerializeField] Slot currentSelectedSlot;
+    [SerializeField] GameObject itemHolder;
+    [SerializeField] WeaponUseManager weaponUseManager;
 
     [SerializeField] GameObject newestPageMade;
 
@@ -37,6 +42,7 @@ public class Inventory : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
         controls = new Controls();
     }
 
@@ -249,6 +255,27 @@ public class Inventory : MonoBehaviour
             {
                 currentActivePage = pages[i].gameObject;
             }
+        }
+    }
+
+    public void AssignSlotToCurrentSlot(Slot newSlot)
+    {
+        currentSelectedSlot = newSlot;
+    }
+
+    public void UseItemInCurrentSlot()
+    {
+        if(currentSelectedSlot == null) return;
+
+        if (currentSelectedSlot.ReturnItem().isWeapon)
+        {
+            GameObject currentWeapon = Instantiate(currentSelectedSlot.ReturnItem().itemPrefab, itemHolder.transform);
+            weaponUseManager.SetCurrentWeapon(currentWeapon);
+            weaponUseManager.AuthentificationOfCurrentWeapon();
+        }
+        else if(currentSelectedSlot.ReturnItem().isConsumable)
+        {
+            print("Ate");
         }
     }
 

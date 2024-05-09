@@ -10,6 +10,7 @@ public class Item : ScriptableObject
     public string itemType;
     public string itemDescription;
     public float itemWeight;
+    public GameObject itemPrefab;
 
     public bool isWeapon;
     public bool isConsumable;
