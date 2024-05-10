@@ -1,10 +1,12 @@
+
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 using UnityEngine.UI;
 using TMPro;
 
+[System.Serializable]
 public class Inventory : MonoBehaviour
 {
     public static Inventory Instance;
@@ -19,7 +21,8 @@ public class Inventory : MonoBehaviour
 
     [SerializeField] GameObject itemSlot;
     public List<Item> items;
-    [SerializeField] Canvas inventoryCanvas;
+    public List<GameObject> possiblePhysicalItems;
+    [SerializeField] GameObject inventoryCanvas;
     [SerializeField] Button startupSelectedButton;
     [SerializeField] GameObject currentActivePage;
     [SerializeField] Slot currentSelectedSlot;
@@ -272,11 +275,53 @@ public class Inventory : MonoBehaviour
             GameObject currentWeapon = Instantiate(currentSelectedSlot.ReturnItem().itemPrefab, itemHolder.transform);
             weaponUseManager.SetCurrentWeapon(currentWeapon);
             weaponUseManager.AuthentificationOfCurrentWeapon();
+            currentSelectedSlot = null;
         }
         else if(currentSelectedSlot.ReturnItem().isConsumable)
         {
-            print("Ate");
+            SearchAndDestroySpecificItem(currentSelectedSlot.ReturnItem());
+            Destroy(currentSelectedSlot.transform.gameObject);
         }
+    }
+
+    public void ThrowItemAway()
+    {
+        if (currentSelectedSlot == null) return;
+
+        if(itemHolder.transform.childCount > 0)
+        {
+            SearchAndDestroySpecificItem(currentSelectedSlot.ReturnItem());
+            Destroy(currentSelectedSlot.transform.gameObject);
+            StowWeaponAway();
+        }
+    }
+
+    public void StowWeaponAway()
+    {
+        if(itemHolder.transform.childCount > 0)
+        {
+            Destroy(itemHolder.transform.GetChild(0).gameObject);
+            currentSelectedSlot = null;
+        }
+    }
+
+    public void ThrowSpecificItemAway(Item throwItem)
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (pages[i].GetComponentInChildren<Slot>().ReturnItem() == throwItem)
+            {
+                Destroy(pages[i].GetComponentInChildren<Slot>().gameObject);
+
+                items.Remove(throwItem);
+                break;
+            }
+        }
+    }
+
+    public void SearchAndDestroySpecificItem(Item theItem)
+    {
+        items.Remove(theItem);
     }
 
     public void CheckSlotForSelection(Slot slot)
@@ -334,16 +379,25 @@ public class Inventory : MonoBehaviour
                         print("found slot button");
 
                         startupSelectedButton.Select();
-                        inventoryCanvas.enabled = true;
+
+                        if(itemHolder.transform.childCount > 0)
+                        {
+                            StowWeaponAway();
+                            inventoryCanvas.SetActive(true);
+                        }
+                        else
+                        {
+                            inventoryCanvas.SetActive(true);
+                        }
                     }
                 }
             }
 
-            inventoryCanvas.enabled = true;
+            inventoryCanvas.SetActive(true);
         }
         else
         {
-            inventoryCanvas.enabled = false;
+            inventoryCanvas.SetActive(false);
         }
     }
 }

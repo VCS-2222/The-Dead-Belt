@@ -9,6 +9,8 @@ public class ClipFedGun : MonoBehaviour
     [SerializeField] int maxAmmo;
     public Controls controls;
     [SerializeField] float range;
+    [SerializeField] float delay;
+    [SerializeField] Transform shootPoint;
 
     [Header("Animation")]
     [SerializeField] Animator animator;
@@ -16,7 +18,9 @@ public class ClipFedGun : MonoBehaviour
     private void Awake()
     {
         controls = new Controls();
-        controls.Weapons.Fire.performed += t => TestShoot();
+        controls.Weapons.Fire.performed += t => StartCoroutine(Shoot(shootPoint, delay));
+        controls.Weapons.Reload.performed += t => Reload();
+        controls.Weapons.Stow.performed += t => Stow();
     }
 
     private void OnEnable()
@@ -53,8 +57,18 @@ public class ClipFedGun : MonoBehaviour
         }
     }
 
+    public void AssignComponents(Transform shootingPoint)
+    {
+        shootPoint = shootingPoint;
+    }
+
     public void Reload()
     {
 
+    }
+
+    public void Stow()
+    {
+        Inventory.Instance.StowWeaponAway();
     }
 }

@@ -816,6 +816,24 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Stow"",
+                    ""type"": ""Button"",
+                    ""id"": ""64dd26c4-13d9-411b-8521-7fcacb3099c7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Torch"",
+                    ""type"": ""Button"",
+                    ""id"": ""31ccb335-63e5-46db-b962-157608462b79"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -851,6 +869,28 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""Reload"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""447f9933-d887-460d-83c4-0a3a3d8f2be8"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Stow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e93f911c-70cd-4278-bffd-c27ee068afc6"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Torch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -883,6 +923,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Weapons_Fire = m_Weapons.FindAction("Fire", throwIfNotFound: true);
         m_Weapons_Aim = m_Weapons.FindAction("Aim", throwIfNotFound: true);
         m_Weapons_Reload = m_Weapons.FindAction("Reload", throwIfNotFound: true);
+        m_Weapons_Stow = m_Weapons.FindAction("Stow", throwIfNotFound: true);
+        m_Weapons_Torch = m_Weapons.FindAction("Torch", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1159,6 +1201,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Weapons_Fire;
     private readonly InputAction m_Weapons_Aim;
     private readonly InputAction m_Weapons_Reload;
+    private readonly InputAction m_Weapons_Stow;
+    private readonly InputAction m_Weapons_Torch;
     public struct WeaponsActions
     {
         private @Controls m_Wrapper;
@@ -1166,6 +1210,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @Fire => m_Wrapper.m_Weapons_Fire;
         public InputAction @Aim => m_Wrapper.m_Weapons_Aim;
         public InputAction @Reload => m_Wrapper.m_Weapons_Reload;
+        public InputAction @Stow => m_Wrapper.m_Weapons_Stow;
+        public InputAction @Torch => m_Wrapper.m_Weapons_Torch;
         public InputActionMap Get() { return m_Wrapper.m_Weapons; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1184,6 +1230,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Reload.started += instance.OnReload;
             @Reload.performed += instance.OnReload;
             @Reload.canceled += instance.OnReload;
+            @Stow.started += instance.OnStow;
+            @Stow.performed += instance.OnStow;
+            @Stow.canceled += instance.OnStow;
+            @Torch.started += instance.OnTorch;
+            @Torch.performed += instance.OnTorch;
+            @Torch.canceled += instance.OnTorch;
         }
 
         private void UnregisterCallbacks(IWeaponsActions instance)
@@ -1197,6 +1249,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Reload.started -= instance.OnReload;
             @Reload.performed -= instance.OnReload;
             @Reload.canceled -= instance.OnReload;
+            @Stow.started -= instance.OnStow;
+            @Stow.performed -= instance.OnStow;
+            @Stow.canceled -= instance.OnStow;
+            @Torch.started -= instance.OnTorch;
+            @Torch.performed -= instance.OnTorch;
+            @Torch.canceled -= instance.OnTorch;
         }
 
         public void RemoveCallbacks(IWeaponsActions instance)
@@ -1242,5 +1300,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnFire(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
+        void OnStow(InputAction.CallbackContext context);
+        void OnTorch(InputAction.CallbackContext context);
     }
 }

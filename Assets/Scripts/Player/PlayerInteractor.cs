@@ -97,7 +97,7 @@ public class PlayerInteractor : MonoBehaviour
     void AddItemToInventory(RaycastHit hit)
     {
         Item itemToAdd = hit.transform.gameObject.GetComponent<PhysicalItem>().GetItem();
-        print(itemToAdd.name);
+        //print(itemToAdd.name);
 
         inventory.AddItem(itemToAdd);
         Destroy(hit.transform.gameObject);

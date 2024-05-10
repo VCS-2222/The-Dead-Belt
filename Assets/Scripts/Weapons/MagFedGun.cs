@@ -9,6 +9,8 @@ public class MagFedGun : MonoBehaviour
     [SerializeField] int maxAmmo;
     public Controls controls;
     [SerializeField] float range;
+    [SerializeField] float delay;
+    [SerializeField] Transform shootPoint;
 
     [Header("Animation")]
     [SerializeField] Animator animator;
@@ -16,7 +18,9 @@ public class MagFedGun : MonoBehaviour
     private void Awake()
     {
         controls = new Controls();
-        controls.Weapons.Fire.performed += t => TestShoot();
+        controls.Weapons.Fire.performed += t => StartCoroutine(Shoot(shootPoint, delay));
+        controls.Weapons.Reload.performed += t => Reload();
+        controls.Weapons.Stow.performed += t => Stow();
     }
 
     private void OnEnable()
@@ -62,6 +66,11 @@ public class MagFedGun : MonoBehaviour
         }
     }
 
+    public void AssignComponents(Transform shootingPoint)
+    {
+        shootPoint = shootingPoint;
+    }
+
     public void Reload()
     {
         if(currentAmmo <= 0)
@@ -76,5 +85,10 @@ public class MagFedGun : MonoBehaviour
             currentAmmo = maxAmmo;
             animator.SetBool("empty", false);
         }
+    }
+
+    public void Stow()
+    {
+        Inventory.Instance.StowWeaponAway();
     }
 }

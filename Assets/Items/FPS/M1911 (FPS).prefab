@@ -547,6 +547,8 @@ MonoBehaviour:
   currentAmmo: 12
   maxAmmo: 12
   range: 20
+  delay: 0.1
+  shootPoint: {fileID: 0}
   animator: {fileID: 8008481601934490696}
 --- !u!1 &4176907186320538310
 GameObject:

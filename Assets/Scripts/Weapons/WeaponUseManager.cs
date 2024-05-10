@@ -24,36 +24,29 @@ public class WeaponUseManager : MonoBehaviour
         controls.Disable();
     }
 
-    private void Start()
-    {
-        
-    }
-
     public void SetCurrentWeapon(GameObject newWeapon)
     {
-        if(currentWeapon != null)
+        if (currentWeapon != null)
         {
             Destroy(currentWeapon);
         }
 
         currentWeapon = newWeapon;
+        AuthentificationOfCurrentWeapon();
     }
 
     public void AuthentificationOfCurrentWeapon()
     {
+        if (currentWeapon == null) return;
+
         if (currentWeapon.GetComponent<ClipFedGun>() != null)
         {
-            controls.Weapons.Fire.performed += t => currentWeapon.GetComponent<ClipFedGun>().StartCoroutine(currentWeapon.GetComponent<ClipFedGun>().Shoot(shootPoint, .1f));
-            controls.Weapons.Reload.performed += t => currentWeapon.GetComponent<ClipFedGun>().Reload();
+            currentWeapon.GetComponent<ClipFedGun>().AssignComponents(shootPoint);
         }
-        else if(currentWeapon.GetComponent<MagFedGun>() != null)
+        
+        if(currentWeapon.GetComponent<MagFedGun>() != null)
         {
-            controls.Weapons.Fire.performed += t => currentWeapon.GetComponent<MagFedGun>().StartCoroutine(currentWeapon.GetComponent<MagFedGun>().Shoot(shootPoint, .1f));
-            controls.Weapons.Reload.performed += t => currentWeapon.GetComponent<MagFedGun>().Reload();
-        }
-        else
-        {
-            return;
+            currentWeapon.GetComponent<MagFedGun>().AssignComponents(shootPoint);
         }
     }
 }
