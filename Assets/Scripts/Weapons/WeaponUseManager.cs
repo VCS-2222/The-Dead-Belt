@@ -48,5 +48,10 @@ public class WeaponUseManager : MonoBehaviour
         {
             currentWeapon.GetComponent<MagFedGun>().AssignComponents(shootPoint);
         }
+
+        if (currentWeapon.GetComponent<Melee>() != null)
+        {
+            currentWeapon.GetComponent<Melee>().AssignComponents(shootPoint);
+        }
     }
 }

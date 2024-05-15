@@ -69,6 +69,11 @@ public class PlayerInteractor : MonoBehaviour
             }
         }
 
+        if (hit.transform.gameObject.GetComponent<EndGame>() != null)
+        {
+            hit.transform.gameObject.GetComponent<EndGame>().FeedPackageToKiosk();
+        }
+
         if (hit.transform.gameObject.GetComponent<PhysicalItem>() != null)
         {
             if (inventory.CheckWeight() >= inventory.ReturnMaxWeight()) return;

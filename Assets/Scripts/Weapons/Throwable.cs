@@ -13,7 +13,6 @@ public class Throwable : MonoBehaviour
     private void Awake()
     {
         controls = new Controls();
-        controls.Weapons.Fire.performed += t => Throw();
         controls.Weapons.Stow.performed += t => Stow();
     }
 
@@ -27,12 +26,21 @@ public class Throwable : MonoBehaviour
         controls.Disable();
     }
 
+    private void Update()
+    {
+        if (controls.Weapons.Fire.WasPressedThisFrame())
+        {
+            Throw();
+        }
+    }
+
     public void Throw()
     {
         GameObject thr = Instantiate(throwable, transform.position, transform.rotation);
-        Inventory.Instance.ThrowSpecificItemAway(itemID);
 
         thr.GetComponent<Rigidbody>().AddForce(transform.forward * throwPower, ForceMode.Impulse);
+        
+        Inventory.Instance.ThrowSpecificItemAway(itemID);
 
         Stow();
     }

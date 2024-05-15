@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c03beb343816cce44a393f04476683e1, type: 3}
+  m_Name: M20 Model 48
+  m_EditorClassIdentifier: 
+  itemName: M20 Model 48
+  itemType: weapon
+  itemDescription: 
+  itemWeight: 12
+  itemPrefab: {fileID: 80516698154260022, guid: 3289b0c33dbbafc4cb441167ac7ec841,
+    type: 3}
+  isWeapon: 1
+  isConsumable: 0
+  isMelee: 0

@@ -16,6 +16,8 @@ MonoBehaviour:
   itemType: weapon
   itemDescription: Old, very old hammer.
   itemWeight: 9
+  itemPrefab: {fileID: 8265728882148565352, guid: 57b5a73435edcd2429aac75762ff2825,
+    type: 3}
   isWeapon: 1
   isConsumable: 0
   isMelee: 1

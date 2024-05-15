@@ -10,7 +10,11 @@ public class ClipFedGun : MonoBehaviour
     public Controls controls;
     [SerializeField] float range;
     [SerializeField] float delay;
+
+    [Header("Gun Components")]
     [SerializeField] Transform shootPoint;
+    [SerializeField] AudioSource shootSound;
+    [SerializeField] AudioClip[] gunShots;
 
     [Header("Animation")]
     [SerializeField] Animator animator;
@@ -36,6 +40,12 @@ public class ClipFedGun : MonoBehaviour
     public void TestShoot()
     {
         print(transform.name + " SHOT");
+    }
+
+    public void PlayRandomShotSound()
+    {
+        int ranNum = Random.Range(0, gunShots.Length);
+        shootSound.PlayOneShot(gunShots[ranNum]);
     }
 
     public IEnumerator Shoot(Transform origin, float delayToShoot)

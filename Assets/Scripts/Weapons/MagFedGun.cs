@@ -10,7 +10,11 @@ public class MagFedGun : MonoBehaviour
     public Controls controls;
     [SerializeField] float range;
     [SerializeField] float delay;
+
+    [Header("Gun Components")]
     [SerializeField] Transform shootPoint;
+    [SerializeField] AudioSource shootSound;
+    [SerializeField] AudioClip[] gunShots;
 
     [Header("Animation")]
     [SerializeField] Animator animator;
@@ -66,6 +70,12 @@ public class MagFedGun : MonoBehaviour
         }
     }
 
+    public void PlayRandomShotSound()
+    {
+        int ranNum = Random.Range(0, gunShots.Length);
+        shootSound.PlayOneShot(gunShots[ranNum]);
+    }
+
     public void AssignComponents(Transform shootingPoint)
     {
         shootPoint = shootingPoint;
@@ -73,13 +83,13 @@ public class MagFedGun : MonoBehaviour
 
     public void Reload()
     {
-        if(currentAmmo <= 0)
+        if(currentAmmo <= 0 && Inventory.Instance.ReturnAmmo() == true)
         {
             animator.SetTrigger("reload");
             currentAmmo = maxAmmo;
             animator.SetBool("empty", false);
         }
-        else
+        else if(currentAmmo > 0 && Inventory.Instance.ReturnAmmo() == true)
         {
             animator.SetTrigger("reload");
             currentAmmo = maxAmmo;

@@ -28,6 +28,7 @@ public class Inventory : MonoBehaviour
     [SerializeField] Slot currentSelectedSlot;
     [SerializeField] GameObject itemHolder;
     [SerializeField] WeaponUseManager weaponUseManager;
+    [SerializeField] Item ammoNeeded;
 
     [SerializeField] GameObject newestPageMade;
 
@@ -294,6 +295,11 @@ public class Inventory : MonoBehaviour
             Destroy(currentSelectedSlot.transform.gameObject);
             StowWeaponAway();
         }
+        else
+        {
+            SearchAndDestroySpecificItem(currentSelectedSlot.ReturnItem());
+            Destroy(currentSelectedSlot.transform.gameObject);
+        }
     }
 
     public void StowWeaponAway()
@@ -307,16 +313,82 @@ public class Inventory : MonoBehaviour
 
     public void ThrowSpecificItemAway(Item throwItem)
     {
-        for (int i = 0; i < items.Count; i++)
+        for (int i = 0; i < pages.Count; i++)
         {
-            if (pages[i].GetComponentInChildren<Slot>().ReturnItem() == throwItem)
+            print("looking in page " + pages[i]);
+            for(int o = 0; o < pages[i].slotHolder.transform.childCount; o++)
             {
-                Destroy(pages[i].GetComponentInChildren<Slot>().gameObject);
+                print("looking at slot " + pages[i].slotHolder.transform.GetChild(o));
+                if (pages[i].slotHolder.transform.GetChild(o).gameObject.GetComponent<Slot>().ReturnItem() == throwItem)
+                {
+                    Destroy(pages[i].slotHolder.transform.GetChild(o).gameObject);
 
-                items.Remove(throwItem);
-                break;
+                    items.Remove(throwItem);
+                    print("found and destroyed slot");
+                    break;
+                }
             }
         }
+    }
+
+    public Item ReturnAmmo()
+    {
+        for (int i = 0; i < pages.Count; i++)
+        {
+            print("looking in page " + pages[i]);
+            for (int o = 0; o < pages[i].slotHolder.transform.childCount; o++)
+            {
+                print("looking at slot " + pages[i].slotHolder.transform.GetChild(o));
+                if (pages[i].slotHolder.transform.GetChild(o).gameObject.GetComponent<Slot>().ReturnItem() == ammoNeeded)
+                {
+                    Item theAmmo = pages[i].slotHolder.transform.GetChild(o).gameObject.GetComponent<Slot>().ReturnItem();
+
+                    print("found and collected ammo");
+                    Destroy(pages[i].slotHolder.transform.GetChild(o).gameObject);
+
+                    SearchAndDestroySpecificItem(theAmmo);
+
+                    return theAmmo;
+
+                }
+                else
+                {
+                    
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public Item ReturnItem(Item wantedItem)
+    {
+        for (int i = 0; i < pages.Count; i++)
+        {
+            print("looking in page " + pages[i]);
+            for (int o = 0; o < pages[i].slotHolder.transform.childCount; o++)
+            {
+                print("looking at slot " + pages[i].slotHolder.transform.GetChild(o));
+                if (pages[i].slotHolder.transform.GetChild(o).gameObject.GetComponent<Slot>().ReturnItem() == wantedItem)
+                {
+                    Item theItem = pages[i].slotHolder.transform.GetChild(o).gameObject.GetComponent<Slot>().ReturnItem();
+
+                    print("found and collected ammo");
+                    Destroy(pages[i].slotHolder.transform.GetChild(o).gameObject);
+
+                    SearchAndDestroySpecificItem(theItem);
+
+                    return theItem;
+
+                }
+                else
+                {
+
+                }
+            }
+        }
+
+        return null;
     }
 
     public void SearchAndDestroySpecificItem(Item theItem)
