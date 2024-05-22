@@ -545,10 +545,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4deb438535614b4d8c1bfa2553ab89c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentAmmo: 12
+  currentAmmo: 0
   maxAmmo: 12
   range: 20
   delay: 0.1
+  damagePerBullet: 15
+  ammo: {fileID: 11400000, guid: 12cf129c906e9cf4eb595fab1c7519b4, type: 2}
   shootPoint: {fileID: 0}
   shootSound: {fileID: 6873682333549813767}
   gunShots:

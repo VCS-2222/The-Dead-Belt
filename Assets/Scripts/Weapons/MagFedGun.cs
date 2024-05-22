@@ -10,8 +10,11 @@ public class MagFedGun : MonoBehaviour
     public Controls controls;
     [SerializeField] float range;
     [SerializeField] float delay;
+    [SerializeField] float damagePerBullet;
+    bool isShooting;
 
     [Header("Gun Components")]
+    [SerializeField] Item ammo;
     [SerializeField] Transform shootPoint;
     [SerializeField] AudioSource shootSound;
     [SerializeField] AudioClip[] gunShots;
@@ -37,16 +40,20 @@ public class MagFedGun : MonoBehaviour
         controls.Disable();
     }
 
-    public void TestShoot()
+    private void Start()
     {
-        print(transform.name + " SHOT");
+        isShooting = false;
     }
 
     public IEnumerator Shoot(Transform origin, float delayToShoot)
     {
+        if (isShooting) yield break;
+
         if (currentAmmo <= 0) yield break;
 
         animator.SetTrigger("shot");
+
+        isShooting = true;
 
         yield return new WaitForSeconds(delayToShoot);
 
@@ -63,11 +70,13 @@ public class MagFedGun : MonoBehaviour
         if (hit.collider != null)
         {
             print(hit.collider.gameObject.name);
-            if (hit.collider.gameObject.GetComponent<ZombieMovement>() != null)
+            if (hit.collider.tag == "Zombie")
             {
-                Destroy(hit.collider.gameObject);
+                hit.collider.gameObject.GetComponent<ZombieStats>().TakeDamage(damagePerBullet);
             }
         }
+
+        isShooting = false;
     }
 
     public void PlayRandomShotSound()
@@ -99,6 +108,11 @@ public class MagFedGun : MonoBehaviour
 
     public void Stow()
     {
+        if(currentAmmo == maxAmmo)
+        {
+            Inventory.Instance.AddItem(ammo);
+        }
+
         Inventory.Instance.StowWeaponAway();
     }
 }

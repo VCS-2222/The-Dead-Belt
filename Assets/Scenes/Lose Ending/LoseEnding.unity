@@ -692,7 +692,7 @@ MonoBehaviour:
   - Your death is not anything new, remember, there have been other couriers before
     you. None died of old age...
   - Neither did you...
-  scrollSpeed: 10
+  scrollSpeed: 6
   cutsceneText: {fileID: 373000143}
   menuButton: {fileID: 297836708}
 --- !u!114 &761026118

@@ -22,6 +22,11 @@ public class ZombieAnimatorController : MonoBehaviour
         SetBlendToVelotity();
     }
 
+    public void SetSpecificAnimatorBools(string ParameterName, bool activated)
+    {
+        animator.SetBool(ParameterName, activated);
+    }
+
     public void SetBlendToVelotity()
     {
         oneDimentionAnimatorBlend = agent.velocity.magnitude;

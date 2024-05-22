@@ -1168,7 +1168,7 @@ MonoBehaviour:
     Cozy enough...
   - The courier arrived the next day and escorted you back to Mine 10...
   - '"I travelled, I delievered, I survived"'
-  scrollSpeed: 10
+  scrollSpeed: 6
   cutsceneText: {fileID: 694546336}
   menuButton: {fileID: 6305487}
 --- !u!1 &1787936846

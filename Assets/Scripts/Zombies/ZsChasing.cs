@@ -6,6 +6,7 @@ public class ZsChasing : ZState
 {
     ZombieStateMachine stateMachine;
     Transform target;
+    float accurateRemainingDistance;
 
     public void Activating(ZombieStateMachine StateMachine)
     {
@@ -18,9 +19,12 @@ public class ZsChasing : ZState
     {
         stateMachine.agent.destination = target.position;
 
-        if (stateMachine.agent.remainingDistance < 1)
+        accurateRemainingDistance = Vector3.Distance(stateMachine.agent.transform.position, target.transform.position);
+        //Debug.Log(accurateRemainingDistance);
+
+        if (accurateRemainingDistance < 1.35f)
         {
-            //stateMachine.ChangeState(stateMachine.);
+            stateMachine.ChangeState(stateMachine.attackState);
         }
     }
 

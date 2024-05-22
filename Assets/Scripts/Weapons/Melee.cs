@@ -7,6 +7,7 @@ public class Melee : MonoBehaviour
     [Header("Weapon Variables")]
     [SerializeField] float range;
     [SerializeField] float delay;
+    [SerializeField] float damage;
 
     [Header("Weapon Components")]
     [SerializeField] Transform attackPoint;
@@ -16,6 +17,7 @@ public class Melee : MonoBehaviour
 
     [Header("Animation")]
     [SerializeField] Animator animator;
+    [SerializeField] int randomAnimations;
 
     private void Awake()
     {
@@ -38,6 +40,8 @@ public class Melee : MonoBehaviour
     {
         animator.SetTrigger("shot");
 
+        animator.SetInteger("randomattack", Random.Range(0, randomAnimations));
+
         yield return new WaitForSeconds(delayToShoot);
 
         RaycastHit hit;
@@ -46,9 +50,9 @@ public class Melee : MonoBehaviour
         if (hit.collider != null)
         {
             print(hit.collider.gameObject.name);
-            if (hit.collider.gameObject.GetComponent<ZombieMovement>() != null)
+            if (hit.collider.tag == "Zombie")
             {
-                Destroy(hit.collider.gameObject);
+                hit.collider.gameObject.GetComponent<ZombieStats>().TakeDamage(damage);
             }
         }
     }

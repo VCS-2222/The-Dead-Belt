@@ -382,6 +382,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 4
   delay: 0.15
+  damage: 10
   attackPoint: {fileID: 0}
   attackSounds: {fileID: 6583037987080866328}
   attackAudioClips:
@@ -390,3 +391,4 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7c518e8469a403b4c981664ecb28a79a, type: 3}
   - {fileID: 8300000, guid: 1f2844efbf7abf647ba3d75d510f823a, type: 3}
   animator: {fileID: 4384517868463879319}
+  randomAnimations: 3

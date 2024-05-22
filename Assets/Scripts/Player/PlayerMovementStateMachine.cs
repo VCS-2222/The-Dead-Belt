@@ -34,6 +34,7 @@ public class PlayerMovementStateMachine : MonoBehaviour
     [SerializeField] GravityApplier gravityApplier;
     public float zAxis;
     public float xAxis;
+    [SerializeField] bool canMove;
 
     public Vector3 direction;
     public float controllerVelocity;
@@ -62,6 +63,11 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
     private void Update()
     {
+        if (currentState != null)
+        {
+            currentState.OnUpdate();
+        }
+
         currentStatePlaying = currentState.ToString();
 
         controls.Player.Movement.performed += t => AxisHandler(t.ReadValue<Vector2>());
@@ -69,22 +75,19 @@ public class PlayerMovementStateMachine : MonoBehaviour
         direction = transform.forward * zAxis + transform.right * xAxis;
         direction = Vector3.ClampMagnitude(direction, currentSpeed);
 
-        if (currentState != null)
-        {
-            currentState.OnUpdate();
-        }
-
         controllerVelocity = controller.velocity.magnitude;
     }
 
     private void FixedUpdate()
     {
-        controller.Move(direction * currentSpeed);
-
         if (currentState != null)
         {
             currentState.OnFixedUpdate();
         }
+
+        if (!canMove) return;
+
+        controller.Move(direction * currentSpeed);
     }
 
     public void CheckForStateChange()
@@ -178,6 +181,26 @@ public class PlayerMovementStateMachine : MonoBehaviour
         }
 
         //controller.center = new Vector3(0, targetCenterPos, 0);
+    }
+
+    public void SetMobility(bool CanThePlayerMove)
+    {
+        if (CanThePlayerMove)
+        {
+            zAxis = 0;
+            xAxis = 0;
+            canMove = true;
+        }
+        else
+        {
+            canMove = false;
+            zAxis = 0;
+            xAxis = 0;
+            ChangeState(idleState);
+            controller.Move(Vector3.zero);
+        }
+
+        CheckForStateChange();
     }
 
     public void SetSpeed(float newSpeed)

@@ -23,9 +23,13 @@ public class ZombieStateMachine : MonoBehaviour
     public ZsIdling idleState = new ZsIdling();
     public ZsRoaming roamState = new ZsRoaming();
     public ZsChasing chaseState = new ZsChasing();
+    public ZsAttacking attackState = new ZsAttacking();
+
+    [HideInInspector] public ZombieAnimatorController animatorController;
 
     private void Start()
     {
+        animatorController = GetComponentInChildren<ZombieAnimatorController>();
         lastState = null;
         ChangeState(idleState);
     }

@@ -77,7 +77,9 @@ MonoBehaviour:
   currentAmmo: 0
   maxAmmo: 3
   range: 8
-  delay: 0.1
+  delay: 0.2
+  damagePerBullet: 100
+  ammo: {fileID: 11400000, guid: 12cf129c906e9cf4eb595fab1c7519b4, type: 2}
   shootPoint: {fileID: 0}
   shootSound: {fileID: 6161942587970449572}
   gunShots:
