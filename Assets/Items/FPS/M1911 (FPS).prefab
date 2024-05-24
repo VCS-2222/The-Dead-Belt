@@ -550,6 +550,8 @@ MonoBehaviour:
   range: 20
   delay: 0.1
   damagePerBullet: 15
+  isShooting: 0
+  isReloading: 0
   ammo: {fileID: 11400000, guid: 12cf129c906e9cf4eb595fab1c7519b4, type: 2}
   shootPoint: {fileID: 0}
   shootSound: {fileID: 6873682333549813767}
@@ -1196,7 +1198,8 @@ AudioSource:
   m_GameObject: {fileID: 7957132191741168328}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 2f005b2aeded0a34e8200863bccdef4b,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1

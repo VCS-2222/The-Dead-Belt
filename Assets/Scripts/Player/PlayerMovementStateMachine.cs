@@ -127,6 +127,11 @@ public class PlayerMovementStateMachine : MonoBehaviour
         xAxis = axis.x;
     }
 
+    public bool ReturnMovementAllowance()
+    {
+        return canMove;
+    }
+
     public void ChangeController(float center, float height)
     {
         Vector3 targetCenterPos = new Vector3(0, center, 0);

@@ -14,6 +14,7 @@ public class Item : ScriptableObject
 
     public bool isWeapon;
     public bool isConsumable;
+    public bool isStory;
 
     public bool isMelee;
     public float ReturnWeight()

@@ -11,7 +11,10 @@ public class ClipFedGun : MonoBehaviour
     [SerializeField] float range;
     [SerializeField] float delay;
     [SerializeField] float damagePerBullet;
-    bool isShooting;
+
+    [Header("Gun States")]
+    [SerializeField] bool isShooting;
+    [SerializeField] bool isReloading;
 
     [Header("Gun Components")]
     [SerializeField] Item ammo;
@@ -25,9 +28,6 @@ public class ClipFedGun : MonoBehaviour
     private void Awake()
     {
         controls = new Controls();
-        controls.Weapons.Fire.performed += t => StartCoroutine(Shoot(shootPoint, delay));
-        controls.Weapons.Reload.performed += t => Reload();
-        controls.Weapons.Stow.performed += t => Stow();
     }
 
     private void OnEnable()
@@ -43,6 +43,25 @@ public class ClipFedGun : MonoBehaviour
     private void Start()
     {
         isShooting = false;
+        isReloading = false;
+    }
+
+    private void Update()
+    {
+        if (controls.Weapons.Fire.WasPressedThisFrame() && !isReloading && !isShooting)
+        {
+            StartCoroutine(Shoot(shootPoint, delay));
+        }
+
+        if (controls.Weapons.Reload.WasPressedThisFrame() && !isShooting)
+        {
+            Reload();
+        }
+
+        if (controls.Weapons.Stow.WasPerformedThisFrame() && !isReloading && !isShooting)
+        {
+            Stow();
+        }
     }
 
     public void PlayRandomShotSound()
@@ -53,13 +72,11 @@ public class ClipFedGun : MonoBehaviour
 
     public IEnumerator Shoot(Transform origin, float delayToShoot)
     {
-        if (isShooting) yield break;
-
         if (currentAmmo <= 0) yield break;
 
-        animator.SetTrigger("shot");
+        if (isShooting) yield break;
 
-        isShooting = true;
+        animator.SetTrigger("shot");
 
         yield return new WaitForSeconds(delayToShoot);
 
@@ -76,8 +93,6 @@ public class ClipFedGun : MonoBehaviour
                 hit.collider.gameObject.GetComponent<ZombieStats>().TakeDamage(damagePerBullet);
             }
         }
-
-        isShooting = false;
     }
 
     public void AssignComponents(Transform shootingPoint)
@@ -139,6 +154,25 @@ public class ClipFedGun : MonoBehaviour
 
             currentAmmo = maxAmmo;
         }
+    }
+    public void ShootTrue()
+    {
+        isShooting = true;
+    }
+
+    public void ShootFalse()
+    {
+        isShooting = false;
+    }
+
+    public void ReloadTrue()
+    {
+        isReloading = true;
+    }
+
+    public void ReloadFalse()
+    {
+        isReloading = false;
     }
 
     public void Stow()

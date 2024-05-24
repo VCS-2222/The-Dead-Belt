@@ -19,4 +19,5 @@ MonoBehaviour:
   itemPrefab: {fileID: 0}
   isWeapon: 0
   isConsumable: 0
+  isStory: 1
   isMelee: 0

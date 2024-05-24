@@ -45,6 +45,7 @@ public class Slot : MonoBehaviour
     public void MakeThisSlotCurrentSlot()
     {
         Inventory.Instance.AssignSlotToCurrentSlot(gameObject.GetComponent<Slot>());
+        Inventory.Instance.AssignItemToDescription(ReturnItem());
     }
 
     public void KillItemInSlot()

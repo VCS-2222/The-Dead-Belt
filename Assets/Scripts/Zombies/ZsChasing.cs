@@ -20,9 +20,9 @@ public class ZsChasing : ZState
         stateMachine.agent.destination = target.position;
 
         accurateRemainingDistance = Vector3.Distance(stateMachine.agent.transform.position, target.transform.position);
-        //Debug.Log(accurateRemainingDistance);
+        Debug.Log(accurateRemainingDistance);
 
-        if (accurateRemainingDistance < 1.35f)
+        if (accurateRemainingDistance < 1.1f)
         {
             stateMachine.ChangeState(stateMachine.attackState);
         }

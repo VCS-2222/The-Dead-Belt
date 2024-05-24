@@ -17,12 +17,12 @@ public class PmIdling : IState
 
     public void OnUpdate()
     {
-        if(controls.Player.Crouching.WasPerformedThisFrame())
+        if(controls.Player.Crouching.WasPerformedThisFrame() && stateMachine.ReturnMovementAllowance())
         {
             stateMachine.ChangeState(stateMachine.crouchState);
         }
 
-        if (controls.Player.Proning.WasPerformedThisFrame())
+        if (controls.Player.Proning.WasPerformedThisFrame() && stateMachine.ReturnMovementAllowance())
         {
             stateMachine.ChangeState(stateMachine.crawlingState);
         }

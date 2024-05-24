@@ -14,18 +14,19 @@ public class ZsAttacking : ZState
         target = stateMachine.breathingTarget.transform;
         target.GetComponent<PlayerMovementStateMachine>().SetMobility(false);
         stateMachine.animatorController.SetSpecificAnimatorBools("biting", true);
-        Debug.Log("attacking");
+        stateMachine.agent.isStopped = true;
+        stateMachine.transform.LookAt(stateMachine.breathingTarget.gameObject.transform);
     }
 
     public void Updating()
     {
-        accurateRemainingDistance = Vector3.Distance(stateMachine.agent.transform.position, target.transform.position);
+        //accurateRemainingDistance = Vector3.Distance(stateMachine.agent.transform.position, target.transform.position);
         //Debug.Log(accurateRemainingDistance);
 
-        if (accurateRemainingDistance > 1.7f)
-        {
-            stateMachine.ChangeState(stateMachine.chaseState);
-        }
+        //if (accurateRemainingDistance > 2f)
+        //{
+        //    stateMachine.ChangeState(stateMachine.chaseState);
+        //}
     }
 
     public void FixedUpdating()

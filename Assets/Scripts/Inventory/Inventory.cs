@@ -22,13 +22,16 @@ public class Inventory : MonoBehaviour
     [SerializeField] GameObject itemSlot;
     public List<Item> items;
     public List<GameObject> possiblePhysicalItems;
-    [SerializeField] GameObject inventoryCanvas;
+    [SerializeField] MeshRenderer inventoryCanvasMesh;
+    [SerializeField] Canvas inventoryCanvasUI;
     [SerializeField] Button startupSelectedButton;
     [SerializeField] GameObject currentActivePage;
     [SerializeField] Slot currentSelectedSlot;
     [SerializeField] GameObject itemHolder;
     [SerializeField] WeaponUseManager weaponUseManager;
     [SerializeField] Item ammoNeeded;
+
+    [SerializeField] PlayerStats playerStats;
 
     [SerializeField] GameObject newestPageMade;
 
@@ -143,6 +146,7 @@ public class Inventory : MonoBehaviour
 
     public void MakeNewPage()
     {
+        ClearDescription();
         GameObject newPage = Instantiate(pagePrefab, pageHolder.transform, false);
         newestPageMade = newPage;
         pages.Add(newPage.GetComponent<InventoryPage>());
@@ -206,6 +210,8 @@ public class Inventory : MonoBehaviour
 
     public void TurnPage(bool right)
     {
+        ClearDescription();
+
         if (right)
         {
             for (int i = 0; i < pages.Count; i++)
@@ -239,7 +245,7 @@ public class Inventory : MonoBehaviour
         }
 
         GetActivePage();
-        startupSelectedButton = ReturnFirstSlotButton();
+        //startupSelectedButton = ReturnFirstSlotButton();
 
         UpdatePageText();
     }
@@ -267,6 +273,11 @@ public class Inventory : MonoBehaviour
         currentSelectedSlot = newSlot;
     }
 
+    public void AssignItemToDescription(Item designatedItem)
+    {
+        description.text = designatedItem.itemDescription;
+    }
+
     public void UseItemInCurrentSlot()
     {
         if(currentSelectedSlot == null) return;
@@ -276,13 +287,22 @@ public class Inventory : MonoBehaviour
             GameObject currentWeapon = Instantiate(currentSelectedSlot.ReturnItem().itemPrefab, itemHolder.transform);
             weaponUseManager.SetCurrentWeapon(currentWeapon);
             weaponUseManager.AuthentificationOfCurrentWeapon();
+            ClearDescription();
             currentSelectedSlot = null;
         }
         else if(currentSelectedSlot.ReturnItem().isConsumable)
         {
+            playerStats.GainHealth(15);
+            playerStats.Eat(25);
+            ClearDescription();
             SearchAndDestroySpecificItem(currentSelectedSlot.ReturnItem());
             Destroy(currentSelectedSlot.transform.gameObject);
         }
+    }
+
+    public void ClearDescription()
+    {
+        description.text = "";
     }
 
     public void ThrowItemAway()
@@ -291,12 +311,16 @@ public class Inventory : MonoBehaviour
 
         if(itemHolder.transform.childCount > 0)
         {
+            if (currentSelectedSlot.GetComponent<Slot>().ReturnItem().isStory) return;
+
             SearchAndDestroySpecificItem(currentSelectedSlot.ReturnItem());
             Destroy(currentSelectedSlot.transform.gameObject);
             StowWeaponAway();
         }
         else
         {
+            if (currentSelectedSlot.GetComponent<Slot>().ReturnItem().isStory) return;
+
             SearchAndDestroySpecificItem(currentSelectedSlot.ReturnItem());
             Destroy(currentSelectedSlot.transform.gameObject);
         }
@@ -440,36 +464,35 @@ public class Inventory : MonoBehaviour
             {
                 print("found active page");
 
-                if(ReturnFirstSlotOfActivePage() != null)
+                startupSelectedButton.Select();
+
+                if (itemHolder.transform.childCount > 0)
                 {
-                    print("found first slot");
-
-                    startupSelectedButton = ReturnFirstSlotButton();
-
-                    if (startupSelectedButton != null)
-                    {
-                        print("found slot button");
-
-                        startupSelectedButton.Select();
-
-                        if(itemHolder.transform.childCount > 0)
-                        {
-                            StowWeaponAway();
-                            inventoryCanvas.SetActive(true);
-                        }
-                        else
-                        {
-                            inventoryCanvas.SetActive(true);
-                        }
-                    }
+                    //StowWeaponAway();
+                    ClearDescription();
+                    inventoryCanvasMesh.enabled = true;
+                    inventoryCanvasUI.enabled = true;
+                }
+                else
+                {
+                    ClearDescription();
+                    inventoryCanvasMesh.enabled = true;
+                    inventoryCanvasUI.enabled = true;
                 }
             }
 
-            inventoryCanvas.SetActive(true);
+            ClearDescription();
+            startupSelectedButton.Select();
+
+            inventoryCanvasMesh.enabled = true;
+            inventoryCanvasUI.enabled = true;
         }
         else
         {
-            inventoryCanvas.SetActive(false);
+            ClearDescription();
+
+            inventoryCanvasMesh.enabled = false;
+            inventoryCanvasUI.enabled = false;
         }
     }
 }

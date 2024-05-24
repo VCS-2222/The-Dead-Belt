@@ -72,4 +72,11 @@ public class ZombieStateMachine : MonoBehaviour
         currentState = newState;
         currentState.Activating(this);
     }
+
+    private void OnDestroy()
+    {
+        if (!breathingTarget) return;
+
+        breathingTarget.GetComponent<PlayerMovementStateMachine>().SetMobility(true);
+    }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -55,5 +56,11 @@ public class PauseMenu : MonoBehaviour
         pauseMenuCanvus.SetActive(false);
         AudioListener.pause = false;
         Time.timeScale = 1f;
+    }
+
+    public void GoBackToMenu()
+    {
+        UnpauseGame();
+        SceneManager.LoadScene(0);
     }
 }
